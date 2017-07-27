@@ -31,4 +31,6 @@ function toArray (list, start) {
  * @param  {[type]} Moy [description]
  * @return {[type]}     [description]
  */
-export function component(Moy) {}
+export function Component() {
+
+}
