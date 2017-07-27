@@ -1,0 +1,39 @@
+{
+  "name": "moy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "rollup -c -w",
+    "build": "rollup -c",
+    "test": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js",
+    "es": "babel src -d lib",
+    "product": "npm run es && npm run build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyjs/moy.git"
+  },
+  "author": "huyue",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moyjs/moy/issues"
+  },
+  "homepage": "https://github.com/moyjs/moy#readme",
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
+    "babel-plugin-transform-es3-property-literals": "^6.22.0",
+    "babel-preset-latest": "^6.24.1",
+    "rollup": "^0.45.2",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-license": "^0.4.0",
+    "rollup-plugin-multidest": "^1.0.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  },
+  "dependencies": {
+    "tinper-sparrow": "^3.2.3"
+  }
+}
