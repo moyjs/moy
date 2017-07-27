@@ -54,13 +54,13 @@ const init = function (viewModel, element, doApplyBindings) {
 }
 
 const _getDataTables = function (app, viewModel) {
-    for (var key in viewModel) {
-        if (viewModel[key] && viewModel[key] instanceof u.DataTable) {
-            viewModel[key].id = key
-            viewModel[key].parent = viewModel
-            app.addDataTable(viewModel[key])
-        }
-    }
+    // for (var key in viewModel) {
+    //     if (viewModel[key] && viewModel[key] instanceof u.DataTable) {
+    //         viewModel[key].id = key
+    //         viewModel[key].parent = viewModel
+    //         app.addDataTable(viewModel[key])
+    //     }
+    // }
 }
 
 const createApp = function () {
@@ -72,6 +72,5 @@ const createApp = function () {
     return app;
 }
 export {
-    App,
     createApp
 }

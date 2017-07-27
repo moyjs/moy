@@ -15,71 +15,6 @@ var bar = (function (exports) {
  * Date	  : 2016-07-28 14:41:17
  */
 
-var on$1 = function on(element, eventName, child, listener) {
-	if (!element) return;
-	if (arguments.length < 4) {
-		listener = child;
-		child = undefined;
-	} else {
-		var childlistener = function childlistener(e) {
-			if (!e) {
-				return;
-			}
-			var tmpchildren = element.querySelectorAll(child);
-			tmpchildren.forEach(function (node) {
-				if (node == e.target) {
-					listener.call(e.target, e);
-				}
-			});
-		};
-	}
-	//capture = capture || false;
-
-	if (!element["uEvent"]) {
-		//在dom上添加记录区
-		element["uEvent"] = {};
-	}
-	//判断是否元素上是否用通过on方法填加进去的事件
-	if (!element["uEvent"][eventName]) {
-		element["uEvent"][eventName] = [child ? childlistener : listener];
-		if (u.event && u.event[eventName] && u.event[eventName].setup) {
-			u.event[eventName].setup.call(element);
-		}
-		element["uEvent"][eventName + 'fn'] = function (e) {
-			//火狐下有问题修改判断
-			if (!e) e = typeof event != 'undefined' && event ? event : window.event;
-			element["uEvent"][eventName].forEach(function (fn) {
-				try {
-					e.target = e.target || e.srcElement; //兼容IE8
-				} catch (ee) {}
-				if (fn) fn.call(element, e);
-			});
-		};
-		if (element.addEventListener) {
-			// 用于支持DOM的浏览器
-			element.addEventListener(eventName, element["uEvent"][eventName + 'fn']);
-		} else if (element.attachEvent) {
-			// 用于IE浏览器
-			element.attachEvent("on" + eventName, element["uEvent"][eventName + 'fn']);
-		} else {
-			// 用于其它浏览器
-			element["on" + eventName] = element["uEvent"][eventName + 'fn'];
-		}
-	} else {
-		//如果有就直接往元素的记录区添加事件
-		var lis = child ? childlistener : listener;
-		var hasLis = false;
-		element["uEvent"][eventName].forEach(function (fn) {
-			if (fn == lis) {
-				hasLis = true;
-			}
-		});
-		if (!hasLis) {
-			element["uEvent"][eventName].push(child ? childlistener : listener);
-		}
-	}
-};
-
 /**
  * Module : Sparrow dom
  * Author : Kvkens(yueming@yonyou.com)
@@ -433,64 +368,6 @@ var CompMgr = {
 var compMgr = CompMgr;
 
 /**
- * Module : Sparrow extend enum
- * Author : Kvkens(yueming@yonyou.com)
- * Date	  : 2016-07-27 21:46:50
- */
-
-var enumerables = true;
-var enumerablesTest = {
-	toString: 1
-};
-for (var i in enumerablesTest) {
-	enumerables = null;
-}
-if (enumerables) {
-	enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
-}
-
-/**
- * Module : Sparrow extend
- * Author : Kvkens(yueming@yonyou.com)
- * Date	  : 2016-07-27 21:46:50
- */
-
-/**
- * 复制对象属性
- *
- * @param {Object}  目标对象
- * @param {config} 源对象
- */
-var extend = function extend(object, config) {
-	var args = arguments,
-	    options;
-	if (args.length > 1) {
-		for (var len = 1; len < args.length; len++) {
-			options = args[len];
-			if (object && options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
-				var i, j, k;
-				for (i in options) {
-					object[i] = options[i];
-				}
-				if (enumerables) {
-					for (j = enumerables.length; j--;) {
-						k = enumerables[j];
-						if (options.hasOwnProperty && options.hasOwnProperty(k)) {
-							object[k] = options[k];
-						}
-					}
-				}
-			}
-		}
-	}
-	return object;
-};
-
-if (!Object.assign) {
-	Object.assign = extend;
-}
-
-/**
  * Module : Sparrow class
  * Author : Kvkens(yueming@yonyou.com)
  * Date	  : 2016-07-28 08:45:39
@@ -643,14 +520,14 @@ function mix(r, s, wl) {
 	}
 }
 
-var toString$1 = Object.prototype.toString;
+var toString = Object.prototype.toString;
 
 var isArray$1 = Array.isArray || function (val) {
-	return toString$1.call(val) === '[object Array]';
+	return toString.call(val) === '[object Array]';
 };
 
 var isFunction = function isFunction(val) {
-	return toString$1.call(val) === '[object Function]';
+	return toString.call(val) === '[object Function]';
 };
 
 var indexOf = function indexOf(arr, item) {
@@ -665,6 +542,64 @@ var indexOf = function indexOf(arr, item) {
 		return -1;
 	}
 };
+
+/**
+ * Module : Sparrow extend enum
+ * Author : Kvkens(yueming@yonyou.com)
+ * Date	  : 2016-07-27 21:46:50
+ */
+
+var enumerables = true;
+var enumerablesTest = {
+	toString: 1
+};
+for (var i in enumerablesTest) {
+	enumerables = null;
+}
+if (enumerables) {
+	enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
+}
+
+/**
+ * Module : Sparrow extend
+ * Author : Kvkens(yueming@yonyou.com)
+ * Date	  : 2016-07-27 21:46:50
+ */
+
+/**
+ * 复制对象属性
+ *
+ * @param {Object}  目标对象
+ * @param {config} 源对象
+ */
+var extend = function extend(object, config) {
+	var args = arguments,
+	    options;
+	if (args.length > 1) {
+		for (var len = 1; len < args.length; len++) {
+			options = args[len];
+			if (object && options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+				var i, j, k;
+				for (i in options) {
+					object[i] = options[i];
+				}
+				if (enumerables) {
+					for (j = enumerables.length; j--;) {
+						k = enumerables[j];
+						if (options.hasOwnProperty && options.hasOwnProperty(k)) {
+							object[k] = options[k];
+						}
+					}
+				}
+			}
+		}
+	}
+	return object;
+};
+
+if (!Object.assign) {
+	Object.assign = extend;
+}
 
 /**
  * Module : Sparrow hotKeys
@@ -862,13 +797,13 @@ var init = function init(viewModel, element, doApplyBindings) {
 };
 
 var _getDataTables = function _getDataTables(app, viewModel) {
-    for (var key in viewModel) {
-        if (viewModel[key] && viewModel[key] instanceof u.DataTable) {
-            viewModel[key].id = key;
-            viewModel[key].parent = viewModel;
-            app.addDataTable(viewModel[key]);
-        }
-    }
+    // for (var key in viewModel) {
+    //     if (viewModel[key] && viewModel[key] instanceof u.DataTable) {
+    //         viewModel[key].id = key
+    //         viewModel[key].parent = viewModel
+    //         app.addDataTable(viewModel[key])
+    //     }
+    // }
 };
 
 var createApp = function createApp() {
@@ -880,29 +815,14 @@ var createApp = function createApp() {
     return app;
 };
 
-window.App = App;
-
 //公开接口、属性对外暴露
-var api = {
+var Moy = {
 	createApp: createApp,
 	compMgr: compMgr
 };
-if (document.readyState && document.readyState === 'complete') {
-	compMgr.updateComp();
-} else {
-	on$1(window, 'load', function () {
-		compMgr.updateComp();
-	});
-}
-// export api;
-//export default api;
-extend(api, window.u || {});
+window.Moy = Moy;
 
-window.u = api;
-window.iweb = {};
-window.iweb.browser = window.u;
-
-exports.u = api;
+exports.Moy = Moy;
 
 return exports;
 
