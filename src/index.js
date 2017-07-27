@@ -2,7 +2,7 @@ import {
     compMgr
 } from './compMgr';
 import {
-    App,
+    App
     createApp
 } from './createApp';
 import {compoxUtil} from  './app/index.js';
@@ -11,11 +11,10 @@ import {
     component
 } from './expand.js';
 
+// use(compoxUtil);
 
-use(compoxUtil);
-
-export default {
-    App,
+export {
+    app: App,
     createApp,
     compMgr,
     use,
