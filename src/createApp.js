@@ -49,18 +49,19 @@ const init = function (viewModel, element, doApplyBindings) {
                 ko.applyBindings(viewModel, element);
         compMgr.updateComp(element);
     });
-
-    _getDataTables(this, viewModel);
+    if(Moy.DataTable && typeof Moy.DataTable === 'function'){
+        _getDataTables(this, viewModel);
+    }
 }
 
 const _getDataTables = function (app, viewModel) {
-    // for (var key in viewModel) {
-    //     if (viewModel[key] && viewModel[key] instanceof u.DataTable) {
-    //         viewModel[key].id = key
-    //         viewModel[key].parent = viewModel
-    //         app.addDataTable(viewModel[key])
-    //     }
-    // }
+    for (var key in viewModel) {
+        if (viewModel[key] && viewModel[key] instanceof Moy.DataTable) {
+            viewModel[key].id = key
+            viewModel[key].parent = viewModel
+            app.addDataTable(viewModel[key])
+        }
+    }
 }
 
 const createApp = function () {

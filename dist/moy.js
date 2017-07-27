@@ -792,18 +792,19 @@ var init = function init(viewModel, element, doApplyBindings) {
         if (typeof doApplyBindings == 'undefined' || doApplyBindings == true) ko.applyBindings(viewModel, element);
         compMgr.updateComp(element);
     });
-
-    _getDataTables(this, viewModel);
+    if (Moy.DataTable && typeof Moy.DataTable === 'function') {
+        _getDataTables(this, viewModel);
+    }
 };
 
 var _getDataTables = function _getDataTables(app, viewModel) {
-    // for (var key in viewModel) {
-    //     if (viewModel[key] && viewModel[key] instanceof u.DataTable) {
-    //         viewModel[key].id = key
-    //         viewModel[key].parent = viewModel
-    //         app.addDataTable(viewModel[key])
-    //     }
-    // }
+    for (var key in viewModel) {
+        if (viewModel[key] && viewModel[key] instanceof Moy.DataTable) {
+            viewModel[key].id = key;
+            viewModel[key].parent = viewModel;
+            app.addDataTable(viewModel[key]);
+        }
+    }
 };
 
 var createApp = function createApp() {
@@ -838,15 +839,15 @@ var initComponent = function initComponent(Moy) {
 };
 
 //公开接口、属性对外暴露
-var Moy = {
+var Moy$1 = {
     createApp: createApp,
     compMgr: compMgr
 };
-initUse(Moy);
-initComponent(Moy);
-window.Moy = Moy;
+initUse(Moy$1);
+initComponent(Moy$1);
+window.Moy = Moy$1;
 
-exports.Moy = Moy;
+exports.Moy = Moy$1;
 
 return exports;
 
