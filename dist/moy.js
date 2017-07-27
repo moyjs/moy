@@ -815,11 +815,35 @@ var createApp = function createApp() {
     return app;
 };
 
+var initUse = function initUse(Moy) {
+    Moy.use = function (plugin) {
+        var installedPlugins = this._installedPlugins || (this._installedPlugins = []);
+        if (installedPlugins.indexOf(plugin) > -1) {
+            return this;
+        }
+        // additional parameters
+        var args = toArray(arguments, 1);
+        args.unshift(this);
+        if (typeof plugin.install === 'function') {
+            plugin.install.apply(plugin, args);
+        } else if (typeof plugin === 'function') {
+            plugin.apply(null, args);
+        }
+        installedPlugins.push(plugin);
+        return this;
+    };
+};
+var initComponent = function initComponent(Moy) {
+    Moy.component = function () {};
+};
+
 //公开接口、属性对外暴露
 var Moy = {
-	createApp: createApp,
-	compMgr: compMgr
+    createApp: createApp,
+    compMgr: compMgr
 };
+initUse(Moy);
+initComponent(Moy);
 window.Moy = Moy;
 
 exports.Moy = Moy;
