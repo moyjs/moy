@@ -6,7 +6,7 @@
  * bugs : https://github.com/moyjs/moy/issues
  */
 
-var Moy = (function (exports) {
+var Moy = (function () {
 'use strict';
 
 /**
@@ -1502,7 +1502,6 @@ var setEnable = function setEnable(enable) {
  * Date	  : 2017-01-18 09:34:01
  */
 function compoxUtil() {
-
 	// setAdjustMetaFunc
 	App.prototype.setAdjustMetaFunc = setAdjustMetaFunc;
 	// dataTable
@@ -1579,12 +1578,14 @@ function component(Moy) {}
 
 use(compoxUtil);
 
-exports.App = App;
-exports.createApp = createApp;
-exports.compMgr = compMgr;
-exports.use = use;
-exports.component = component;
+var index = {
+    App: App,
+    createApp: createApp,
+    compMgr: compMgr,
+    use: use,
+    component: component
+};
 
-return exports;
+return index;
 
-}({}));
+}());

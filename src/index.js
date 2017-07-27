@@ -14,7 +14,7 @@ import {
 
 use(compoxUtil);
 
-export {
+export default {
     App,
     createApp,
     compMgr,
