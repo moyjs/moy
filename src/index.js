@@ -1,24 +1,23 @@
 import {
     compMgr
 } from './compMgr';
-
 import {
+    App,
     createApp
 } from './createApp';
-
+import {compoxUtil} from  './app/index.js';
 import {
-    initUse,
-    initComponent
+    use,
+    component
 } from './expand.js';
 
-//公开接口、属性对外暴露
-let Moy = {
-    createApp: createApp,
-    compMgr: compMgr
-};
-initUse(Moy);
-initComponent(Moy);
-window.Moy = Moy;
+
+use(compoxUtil);
+
 export {
-    Moy
+    App,
+    createApp,
+    compMgr,
+    use,
+    component
 };

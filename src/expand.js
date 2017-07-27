@@ -1,29 +1,34 @@
-let initUse = function(Moy) {
-    Moy.use = function(plugin) {
-        var installedPlugins = (this._installedPlugins || (this._installedPlugins = []));
-        if (installedPlugins.indexOf(plugin) > -1) {
-            return this
-        }
-        // additional parameters
-        var args = toArray(arguments, 1);
-        args.unshift(this);
-        if (typeof plugin.install === 'function') {
-            plugin.install.apply(plugin, args);
-        } else if (typeof plugin === 'function') {
-            plugin.apply(null, args);
-        }
-        installedPlugins.push(plugin);
-        return this;
-    };
-}
-let initComponent = function(Moy) {
-    Moy.component = function() {
-
+/**
+ * [use description]
+ * @param  {[type]} plugin [description]
+ * @return {[type]}        [description]
+ */
+export function use(plugin) {
+    // additional parameters
+    var args = toArray(arguments, 1);
+    args.unshift(this);
+    if (typeof plugin.install === 'function') {
+        plugin.install.apply(plugin, args);
+    } else if (typeof plugin === 'function') {
+        plugin.apply(null, args);
     }
-}
-
-
-export {
-    initUse,
-    initComponent
+    return this;
 };
+/**
+ * Convert an Array-like object to a real Array.
+ */
+function toArray (list, start) {
+  start = start || 0;
+  var i = list.length - start;
+  var ret = new Array(i);
+  while (i--) {
+    ret[i] = list[i + start];
+  }
+  return ret
+}
+/**
+ * [initComponent description]
+ * @param  {[type]} Moy [description]
+ * @return {[type]}     [description]
+ */
+export function component(Moy) {}

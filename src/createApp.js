@@ -73,5 +73,6 @@ const createApp = function () {
     return app;
 }
 export {
+    App,
     createApp
 }

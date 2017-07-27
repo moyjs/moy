@@ -9,7 +9,7 @@ export default {
     entry: "src/index.js",
     dest: `dist/moy.js`,
     format: "iife",
-    moduleName: "bar",
+    moduleName: "Moy",
     plugins: [
         license({
             banner: `<%= pkg.name %> v<%= pkg.version %>
@@ -23,6 +23,7 @@ export default {
             {
                 dest: `dist/moy.min.js`,
                 format: "iife",
+                moduleName: "Moy",
                 plugins: [uglify()]
             }
         ]),
